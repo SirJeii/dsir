@@ -12,8 +12,8 @@ requireRole('admin');
 <body class="bg-light">
 <nav class="navbar navbar-light bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand h5 mb-0" href="/admin_dashboard.php">← Admin</a>
-    <a class="btn btn-outline-danger btn-sm" href="/logout.php">Logout</a>
+    <a class="navbar-brand h5 mb-0" href="/dsir/public/admin_dashboard.php">← Admin</a>
+    <a class="btn btn-outline-danger btn-sm" href="/dsir/public/logout.php">Logout</a>
   </div>
 </nav>
 
@@ -60,14 +60,14 @@ requireRole('admin');
 
 <script>
 async function loadBusinesses() {
-  const res = await fetch('/api/admin/summary.php');
+  const res = await fetch('/dsir/public/api/admin/summary.php');
   const data = await res.json();
   const sel = document.getElementById('b_business');
   sel.innerHTML = data.businesses.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
 }
 
 async function loadBranches() {
-  const res = await fetch('/api/admin/branches.php');
+  const res = await fetch('/dsir/public/api/admin/branches.php');
   const data = await res.json();
   const tb = document.querySelector('#bTable tbody');
   tb.innerHTML = data.branches.map(b => `
@@ -87,7 +87,7 @@ async function loadBranches() {
   }));
   document.querySelectorAll('.del').forEach(btn => btn.addEventListener('click', async () => {
     if (!confirm('Delete branch?')) return;
-    await fetch('/api/admin/branches.php', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:+btn.dataset.id })});
+    await fetch('/dsir/public/api/admin/branches.php', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:+btn.dataset.id })});
     await loadBranches();
   }));
 }
@@ -101,7 +101,7 @@ document.getElementById('saveBranch').addEventListener('click', async e => {
     code: document.getElementById('b_code').value,
     address: document.getElementById('b_addr').value
   };
-  await fetch('/api/admin/branches.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+  await fetch('/dsir/public/api/admin/branches.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
   document.getElementById('bForm').reset();
   await loadBranches();
 });
@@ -112,3 +112,4 @@ document.getElementById('resetForm').addEventListener('click', () => document.ge
 </script>
 </body>
 </html>
+
