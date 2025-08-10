@@ -9,13 +9,13 @@ $rid = isset($_GET['id']) ? (int)$_GET['id'] : 0;
   <meta charset="utf-8">
   <title>Report #<?= htmlspecialchars($rid) ?> – Accountant</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/dsir/public/css/style.css">
 </head>
 <body>
 <nav class="navbar navbar-light bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand h5 mb-0" href="/accountant_queue.php">← Accountant</a>
-    <a class="btn btn-outline-danger btn-sm" href="/logout.php">Logout</a>
+    <a class="navbar-brand h5 mb-0" href="/dsir/public/accountant_queue.php">← Accountant</a>
+    <a class="btn btn-outline-danger btn-sm" href="/dsir/public/logout.php">Logout</a>
   </div>
 </nav>
 
@@ -76,6 +76,7 @@ $rid = isset($_GET['id']) ? (int)$_GET['id'] : 0;
   </div>
 </div>
 
-<script src="/js/accountant.js"></script>
+<script src="/dsir/public/js/accountant.js"></script>
 </body>
 </html>
+
