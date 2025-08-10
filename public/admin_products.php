@@ -12,8 +12,8 @@ requireRole('admin');
 <body class="bg-light">
 <nav class="navbar navbar-light bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand h5 mb-0" href="/admin_dashboard.php">← Admin</a>
-    <a class="btn btn-outline-danger btn-sm" href="/logout.php">Logout</a>
+    <a class="navbar-brand h5 mb-0" href="/dsir/public/admin_dashboard.php">← Admin</a>
+    <a class="btn btn-outline-danger btn-sm" href="/dsir/public/logout.php">Logout</a>
   </div>
 </nav>
 
@@ -70,14 +70,14 @@ requireRole('admin');
 const peso = v => `₱${(+v).toFixed(2)}`;
 
 async function loadBusinesses() {
-  const res = await fetch('/api/admin/summary.php');
+  const res = await fetch('/dsir/public/api/admin/summary.php');
   const data = await res.json();
   const sel = document.getElementById('p_business');
   sel.innerHTML = data.businesses.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
 }
 
 async function loadProducts() {
-  const res = await fetch('/api/admin/products.php');
+  const res = await fetch('/dsir/public/api/admin/products.php');
   const data = await res.json();
   const tb = document.querySelector('#pTable tbody');
   tb.innerHTML = data.products.map(p => `
@@ -100,7 +100,7 @@ async function loadProducts() {
   }));
   document.querySelectorAll('.del').forEach(btn => btn.addEventListener('click', async () => {
     if (!confirm('Delete product?')) return;
-    await fetch('/api/admin/products.php', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:+btn.dataset.id })});
+    await fetch('/dsir/public/api/admin/products.php', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:+btn.dataset.id })});
     await loadProducts();
   }));
 }
@@ -116,7 +116,7 @@ document.getElementById('saveProd').addEventListener('click', async e => {
     srp_cents: Math.round((+document.getElementById('p_srp').value || 0)*100),
     reorder_level: +document.getElementById('p_reorder').value || 0
   };
-  await fetch('/api/admin/products.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+  await fetch('/dsir/public/api/admin/products.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
   document.getElementById('pForm').reset();
   await loadProducts();
 });
@@ -126,3 +126,4 @@ document.getElementById('resetForm').addEventListener('click', () => document.ge
 </script>
 </body>
 </html>
+
