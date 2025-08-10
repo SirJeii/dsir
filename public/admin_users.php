@@ -8,13 +8,13 @@ requireRole('admin');
   <meta charset="utf-8">
   <title>Admin – Users</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/dsir/public/css/style.css">
 </head>
 <body>
 <nav class="navbar navbar-light bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand h5 mb-0" href="/admin_dashboard.php">← Admin</a>
-    <a class="btn btn-outline-danger btn-sm" href="/logout.php">Logout</a>
+    <a class="navbar-brand h5 mb-0" href="/dsir/public/admin_dashboard.php">← Admin</a>
+    <a class="btn btn-outline-danger btn-sm" href="/dsir/public/logout.php">Logout</a>
   </div>
 </nav>
 
@@ -101,7 +101,7 @@ let accessUserId = null;
 let productsCache = [];
 
 async function loadUsers() {
-  const res = await fetch('/api/admin/users.php');
+  const res = await fetch('/dsir/public/api/admin/users.php');
   const data = await res.json();
   const tbody = document.getElementById('usersBody');
   tbody.innerHTML = data.users.map(u => `
@@ -130,7 +130,7 @@ async function loadUsers() {
 
   document.querySelectorAll('.delUser').forEach(b => b.addEventListener('click', async () => {
     if (!confirm('Delete this user?')) return;
-    await fetch('/api/admin/users.php', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:+b.dataset.id })});
+    await fetch('/dsir/public/api/admin/users.php', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id:+b.dataset.id })});
     await loadUsers();
   }));
 
@@ -138,9 +138,9 @@ async function loadUsers() {
     accessUserId = +b.dataset.id;
     document.getElementById('accUserName').innerText = b.dataset.name;
 
-    const prodRes = await fetch('/api/admin/products.php'); const prod = await prodRes.json();
+    const prodRes = await fetch('/dsir/public/api/admin/products.php'); const prod = await prodRes.json();
     productsCache = prod.products;
-    const accRes = await fetch('/api/admin/users.php?access_user='+accessUserId); const acc = await accRes.json();
+    const accRes = await fetch('/dsir/public/api/admin/users.php?access_user='+accessUserId); const acc = await accRes.json();
 
     const body = document.getElementById('accessBody');
     const set = new Set(acc.access.map(a=>a.product_id));
@@ -167,7 +167,7 @@ document.getElementById('saveUser').addEventListener('click', async e => {
     branch_id: document.getElementById('u_branch').value || null,
     password: document.getElementById('u_pass').value || null
   };
-  await fetch('/api/admin/users.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+  await fetch('/dsir/public/api/admin/users.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
   document.getElementById('userForm').reset();
   await loadUsers();
 });
@@ -178,7 +178,7 @@ document.getElementById('saveAccess').addEventListener('click', async () => {
   const checked = [...document.querySelectorAll('.accChk')].filter(c=>c.checked).map(c=>+c.dataset.id);
 
   // Preflight: ask server which Draft DSIRs would be impacted by revoking access
-  const impactRes = await fetch('/api/admin/access_impact.php', {
+  const impactRes = await fetch('/dsir/public/api/admin/access_impact.php', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ user_id: accessUserId, new_product_ids: checked })
   });
@@ -195,7 +195,7 @@ document.getElementById('saveAccess').addEventListener('click', async () => {
     if (!confirm('Continue saving access despite impact?')) return;
   }
 
-  await fetch('/api/admin/users.php?set_access=1', {
+  await fetch('/dsir/public/api/admin/users.php?set_access=1', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ user_id: accessUserId, product_ids: checked })
   });
@@ -206,3 +206,4 @@ loadUsers();
 </script>
 </body>
 </html>
+
