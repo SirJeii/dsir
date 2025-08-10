@@ -1,29 +1,29 @@
 const CACHE_NAME = 'dsir-cache-v2';
 const APP_SHELL = [
   // Core auditor
-  '/auditor_dsir.php',
-  '/js/dsir.js',
-  '/css/style.css',
-  '/manifest.json',
+  '/dsir/public/auditor_dsir.php',
+  '/dsir/public/js/dsir.js',
+  '/dsir/public/css/style.css',
+  '/dsir/public/manifest.json',
   // Admin
-  '/admin_dashboard.php',
-  '/admin_users.php',
-  '/admin_branches.php',
-  '/admin_products.php',
-  '/api/admin/summary.php',
-  '/api/admin/products.php',
-  '/api/admin/branches.php',
-  '/api/admin/users.php',
+  '/dsir/public/admin_dashboard.php',
+  '/dsir/public/admin_users.php',
+  '/dsir/public/admin_branches.php',
+  '/dsir/public/admin_products.php',
+  '/dsir/public/api/admin/summary.php',
+  '/dsir/public/api/admin/products.php',
+  '/dsir/public/api/admin/branches.php',
+  '/dsir/public/api/admin/users.php',
   // Accountant
-  '/accountant_queue.php',
-  '/accountant_report.php',
-  '/js/accountant.js',
+  '/dsir/public/accountant_queue.php',
+  '/dsir/public/accountant_report.php',
+  '/dsir/public/js/accountant.js',
   // Programmer
-  '/programmer.php',
-  '/api/programmer/patches.php',
-  '/api/programmer/settings.php',
+  '/dsir/public/programmer.php',
+  '/dsir/public/api/programmer/patches.php',
+  '/dsir/public/api/programmer/settings.php',
   // Print (optional)
-  '/print/sales_report.php',
+  '/dsir/public/print/sales_report.php',
   // CDN (Chart.js & Bootstrap CSS)
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
@@ -67,3 +67,4 @@ self.addEventListener('fetch', e => {
     }).catch(() => caches.match('/auditor_dsir.php')))
   );
 });
+
