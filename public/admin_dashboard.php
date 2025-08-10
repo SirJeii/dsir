@@ -8,7 +8,7 @@ requireRole('admin');
   <meta charset="utf-8">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/dsir/public/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -17,11 +17,11 @@ requireRole('admin');
     <div class="container-fluid">
       <span class="navbar-brand h5 mb-0">Admin – Dashboard</span>
       <div class="d-flex gap-2">
-        <a class="btn btn-outline-secondary btn-sm" href="/admin_users.php">Users</a>
-        <a class="btn btn-outline-secondary btn-sm" href="/admin_branches.php">Branches</a>
-        <a class="btn btn-outline-secondary btn-sm" href="/admin_products.php">Products</a>
-        <a class="btn btn-outline-secondary btn-sm" href="/admin_warehouse.php">Warehouse</a>
-        <a class="btn btn-outline-danger btn-sm" href="/logout.php">Logout</a>
+        <a class="btn btn-outline-secondary btn-sm" href="/dsir/public/admin_users.php">Users</a>
+        <a class="btn btn-outline-secondary btn-sm" href="/dsir/public/admin_branches.php">Branches</a>
+        <a class="btn btn-outline-secondary btn-sm" href="/dsir/public/admin_products.php">Products</a>
+        <a class="btn btn-outline-secondary btn-sm" href="/dsir/public/admin_warehouse.php">Warehouse</a>
+        <a class="btn btn-outline-danger btn-sm" href="/dsir/public/logout.php">Logout</a>
       </div>
     </div>
   </nav>
@@ -43,8 +43,8 @@ requireRole('admin');
         <div class="card-header d-flex justify-content-between align-items-center">
           <span>Low Stock (Top 10)</span>
           <div>
-            <a class="btn btn-sm btn-outline-secondary" id="btnStockCSV" href="/api/export_stock_csv.php">CSV</a>
-            <a class="btn btn-sm btn-outline-secondary" id="btnStockXLSX" href="/api/export_stock_xlsx.php">XLSX</a>
+            <a class="btn btn-sm btn-outline-secondary" id="btnStockCSV" href="/dsir/public/api/export_stock_csv.php">CSV</a>
+            <a class="btn btn-sm btn-outline-secondary" id="btnStockXLSX" href="/dsir/public/api/export_stock_xlsx.php">XLSX</a>
           </div>
         </div>
         <div class="card-body">
@@ -81,7 +81,7 @@ requireRole('admin');
             <div class="col-12 d-flex gap-2">
               <a class="btn btn-outline-primary btn-sm" id="btnSalesCSV" href="#">Sales CSV</a>
               <a class="btn btn-outline-primary btn-sm" id="btnSalesXLSX" href="#">Sales XLSX</a>
-              <a class="btn btn-outline-secondary btn-sm" href="/print/sales_report.php" target="_blank">Sales PDF (Print)</a>
+              <a class="btn btn-outline-secondary btn-sm" href="/dsir/public/print/sales_report.php" target="_blank">Sales PDF (Print)</a>
             </div>
           </form>
         </div>
@@ -108,10 +108,10 @@ requireRole('admin');
     if (biz)  p.set('business_id', biz);
     if (br)   p.set('branch_id', br);
     const q = p.toString(); const qs = q ? ('?'+q) : '';
-    document.getElementById('btnSalesCSV').href  = '/api/export_sales_csv.php'  + qs;
-    document.getElementById('btnSalesXLSX').href = '/api/export_sales_xlsx.php' + qs;
-    document.getElementById('btnStockCSV').href  = '/api/export_stock_csv.php'  + qs;
-    document.getElementById('btnStockXLSX').href = '/api/export_stock_xlsx.php' + qs;
+    document.getElementById('btnSalesCSV').href  = '/dsir/public/api/export_sales_csv.php'  + qs;
+    document.getElementById('btnSalesXLSX').href = '/dsir/public/api/export_sales_xlsx.php' + qs;
+    document.getElementById('btnStockCSV').href  = '/dsir/public/api/export_stock_csv.php'  + qs;
+    document.getElementById('btnStockXLSX').href = '/dsir/public/api/export_stock_xlsx.php' + qs;
   };
   ['expFrom','expTo','expBiz','expBr'].forEach(id => document.getElementById(id).addEventListener('input', setExportLinks));
   setExportLinks();
@@ -120,7 +120,7 @@ requireRole('admin');
 
 <script>
 (async function(){
-  const sumRes = await fetch('/api/admin/summary.php'); const sum = await sumRes.json();
+  const sumRes = await fetch('/dsir/public/api/admin/summary.php'); const sum = await sumRes.json();
 
   const ctx = document.getElementById('salesChart');
   const labels = sum.sales.labels;
@@ -129,7 +129,7 @@ requireRole('admin');
 
   document.getElementById('lowStockBody').innerHTML = sum.low_stock.map(r=>`<tr><td>${r.branch_name}</td><td>${r.product_name}</td><td>${r.qty}</td></tr>`).join('');
 
-  const anRes = await fetch('/api/admin/analytics.php'); const an = await anRes.json();
+  const anRes = await fetch('/dsir/public/api/admin/analytics.php'); const an = await anRes.json();
 
   const biz = an.business_sales;
   new Chart(document.getElementById('bizChart'), { type:'pie', data:{labels:biz.map(x=>x.business), datasets:[{data:biz.map(x=>(+x.sales)/100)}]} });
@@ -142,3 +142,4 @@ requireRole('admin');
 </script>
 </body>
 </html>
+
