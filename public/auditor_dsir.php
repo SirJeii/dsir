@@ -9,9 +9,9 @@ $user = $_SESSION['user'];
 <head>
   <meta charset="utf-8">
   <title>DSIR - Auditor</title>
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/dsir/public/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/dsir/public/css/style.css">
 </head>
 <body>
 <?php renderMaintenanceOverlay(); ?>
@@ -159,11 +159,12 @@ $user = $_SESSION['user'];
   </form>
 </div>
 
-<script src="/js/dsir.js"></script>
+<script src="/dsir/public/js/dsir.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js').catch(console.error);
+  navigator.serviceWorker.register('/dsir/public/service-worker.js').catch(console.error);
 }
 </script>
 </body>
 </html>
+
