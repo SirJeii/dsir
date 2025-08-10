@@ -14,8 +14,8 @@ requireRole('programmer');
   <div class="container">
     <span class="navbar-brand h5 mb-0">Programmer Tools</span>
     <div class="d-flex gap-2">
-      <a class="btn btn-outline-secondary btn-sm" href="/admin_dashboard.php">Admin</a>
-      <a class="btn btn-outline-danger btn-sm" href="/logout.php">Logout</a>
+      <a class="btn btn-outline-secondary btn-sm" href="/dsir/public/admin_dashboard.php">Admin</a>
+      <a class="btn btn-outline-danger btn-sm" href="/dsir/public/logout.php">Logout</a>
     </div>
   </div>
 </nav>
@@ -146,7 +146,7 @@ requireRole('programmer');
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 async function loadPatches(){
-  const r=await fetch('/api/programmer/patches.php'); const d=await r.json();
+  const r=await fetch('/dsir/public/api/programmer/patches.php'); const d=await r.json();
   document.querySelector('#patchTable tbody').innerHTML=d.items.map(x=>`
     <tr><td>${x.id}</td><td>${x.version}</td><td>${x.title}</td>
     <td>${x.file_path?`<a href="${x.file_path}" target="_blank">download</a>`:''}</td>
@@ -165,31 +165,31 @@ document.getElementById('savePatch').addEventListener('click', async e=>{
 });
 
 async function loadSettings(){
-  const r=await fetch('/api/programmer/settings.php'); const d=await r.json();
+  const r=await fetch('/dsir/public/api/programmer/settings.php'); const d=await r.json();
   const map=new Map(d.items.map(i=>[i.k,i.v]));
   document.querySelectorAll('.s-toggle').forEach(el=>{ el.checked = map.get(el.dataset.key)==='1'; });
   document.querySelector('#settingsTable tbody').innerHTML=d.items.map(i=>`<tr><td>${i.k}</td><td>${i.v}</td><td>${i.updated_at??''}</td></tr>`).join('');
 }
 document.querySelectorAll('.s-toggle').forEach(el=>{
   el.addEventListener('change', async ()=> {
-    await fetch('/api/programmer/settings.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({k:el.dataset.key,v:el.checked?'1':'0'})});
+    await fetch('/dsir/public/api/programmer/settings.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({k:el.dataset.key,v:el.checked?'1':'0'})});
     loadSettings();
   });
 });
 document.getElementById('addSetting').addEventListener('click', async ()=>{
   const k=document.getElementById('s_key').value.trim(), v=document.getElementById('s_val').value;
-  if(!k) return alert('Key required'); await fetch('/api/programmer/settings.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({k,v})});
+  if(!k) return alert('Key required'); await fetch('/dsir/public/api/programmer/settings.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({k,v})});
   document.getElementById('s_key').value=''; document.getElementById('s_val').value=''; loadSettings();
 });
 
 document.getElementById('btnBackup').addEventListener('click', async ()=>{
-  const r=await fetch('/api/programmer/backup_now.php',{method:'POST'}); const o=await r.json();
+  const r=await fetch('/dsir/public/api/programmer/backup_now.php',{method:'POST'}); const o=await r.json();
   if(!r.ok){ alert(o.error||'Backup failed'); return; }
   document.getElementById('backupMsg').innerText=`Backup created: ${o.file} (${o.bytes} bytes)`;
   loadBackups();
 });
 async function loadBackups(){
-  const r=await fetch('/api/programmer/list_backups.php'); const d=await r.json();
+  const r=await fetch('/dsir/public/api/programmer/list_backups.php'); const d=await r.json();
   document.querySelector('#backupTable tbody').innerHTML=d.items.map(b=>`
     <tr><td>${b.created_at}</td><td><a href="${b.file_path}" target="_blank">${b.file_path.split('/').pop()}</a></td><td>${b.file_size}</td><td>${b.created_by_name??''}</td></tr>
   `).join('');
@@ -198,7 +198,7 @@ document.getElementById('restoreForm').addEventListener('submit', async e=>{
   e.preventDefault();
   if(!confirm('This will overwrite the database. Continue?')) return;
   const fd=new FormData(); fd.append('file', document.getElementById('restoreFile').files[0]);
-  const r=await fetch('/api/programmer/restore_backup.php',{method:'POST',body:fd}); const o=await r.json();
+  const r=await fetch('/dsir/public/api/programmer/restore_backup.php',{method:'POST',body:fd}); const o=await r.json();
   if(!r.ok){ alert(o.error||'Restore failed'); return; }
   alert('Restore completed.');
 });
@@ -208,7 +208,7 @@ document.getElementById('loadLogs').addEventListener('click', async ()=>{
   const f = document.getElementById('logFrom').value || '';
   const t = document.getElementById('logTo').value || '';
   const q = new URLSearchParams({action:a, from:f, to:t});
-  const r = await fetch('/api/programmer/audit_logs.php?'+q.toString());
+  const r = await fetch('/dsir/public/api/programmer/audit_logs.php?'+q.toString());
   const d = await r.json();
   document.querySelector('#logsTable tbody').innerHTML = d.items.map(x=>`
     <tr><td>${x.created_at}</td><td>${x.user_name??''}</td><td>${x.action}</td>
@@ -217,7 +217,7 @@ document.getElementById('loadLogs').addEventListener('click', async ()=>{
 });
 
 async function loadDiag(){
-  const r=await fetch('/api/programmer/diagnostics.php'); const d=await r.json();
+  const r=await fetch('/dsir/public/api/programmer/diagnostics.php'); const d=await r.json();
   document.getElementById('diagBox').innerHTML = `
     <div>PHP ${d.php.version} • Upload max ${d.php.upload_max} • Post max ${d.php.post_max}</div>
     <div>Storage free: ${d.storage.free_gb} GB</div>
@@ -228,3 +228,4 @@ async function loadDiag(){
 </script>
 </body>
 </html>
+
